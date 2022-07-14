@@ -1,7 +1,10 @@
-interface Todo {
-    text: string;
-    status: boolean;
-    date: string;
-}
+type getUser = (data1, data2) => void;
 
-type Toggle = (target: Todo) => void;
+interface User {
+    username: string;
+    email: string;
+    color: {
+        start: string;
+        end: string;
+    };
+}

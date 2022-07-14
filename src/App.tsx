@@ -1,96 +1,95 @@
 import React, { useState } from 'react';
-import {
-    ChakraProvider,
-    Box,
-    theme,
-    Heading,
-    VStack,
-    Input,
-    Button,
-    HStack,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { TodoList } from './componet/todoList';
+import { ChakraProvider, Box, extendTheme } from '@chakra-ui/react';
 
-const todos: Todo[] = [
-    {
-        text: 'learning typescript',
-        status: true,
-        date: new Date().toTimeString(),
+import { LoginForm } from './componet/login';
+import { MoviePage } from './componet/home/moviePage';
+import { HomePage } from './componet/home/homePage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import '@fontsource/rubik';
+import './style.css';
+import { SearchPage } from './componet/search/searchPage';
+
+const theme = extendTheme({
+    fonts: {
+        heading: `'rubik', sans-serif`,
+        body: `'rubik', sans-serif`,
     },
+});
+
+const colorGr = [
+    { start: 'red.400', end: 'red.700' },
+    { start: 'facebook.400', end: 'facebook.700' },
+    { start: 'teal.400', end: 'teal.700' },
+    { start: 'purple.400', end: 'purple.700' },
+    { start: 'green.400', end: 'green.700' },
+    { start: 'pink.400', end: 'pink.700' },
+];
+
+const pengguna: User[] = [
     {
-        text: 'learning pydantic',
-        status: false,
-        date: new Date().toTimeString(),
+        username: 'bagus',
+        email: 'bagus@email.com',
+        color: {
+            start: 'red.400',
+            end: 'red.700',
+        },
     },
 ];
 
-export const App = () => {
-    const [todo, setTodo] = useState(todos);
-    const [newText, setNewText] = useState(String);
+export const App: React.FC = () => {
+    const [user, setUser] = useState<User[]>(pengguna);
 
-    const toggleStatus = (target: Todo) => {
-        const newTodo = todo.map((x) => {
-            if (x === target) {
-                return {
-                    ...x,
-                    status: !x.status,
-                };
-            }
-            return x;
-        });
-        setTodo(newTodo);
-    };
-
-    const addTodos = () => {
-        const newTodo: Todo = {
-            text: newText,
-            status: false,
-            date: new Date().toTimeString(),
-        };
-        setTodo(todo.concat(newTodo));
+    const getUser: getUser = (data1: string, data2: string) => {
+        var color = colorGr[Math.floor(Math.random() * colorGr.length)];
+        setUser([
+            ...user,
+            {
+                username: data1,
+                email: data2,
+                color: { ...color, start: color.start, end: color.end },
+            },
+        ]);
     };
 
     return (
         <ChakraProvider theme={theme}>
-            <Box
-                w="100%"
-                minW="100vh"
-                textAlign="center"
-                fontSize="xl"
-                display="flex"
-                justifyContent="center"
-            >
-                <Box mt="10">
-                    <Heading>Todo List App</Heading>
-                    <VStack w="100%" align="self-start" mt="16">
-                        {todo.map((x, i) => (
-                            <TodoList
-                                key={i}
-                                toggle={toggleStatus}
-                                index={i + 1}
-                                todo={todo[i]}
-                            />
-                        ))}
-                        <HStack w="100%" pt="5">
-                            <Input
-                                w="100%"
-                                placeholder="new todo"
-                                onChange={(e) => setNewText(e.target.value)}
-                            />
-                            <Button
-                                onClick={() => {
-                                    addTodos();
-                                    console.log(todo);
-                                }}
-                            >
-                                Add
-                            </Button>
-                        </HStack>
-                    </VStack>
+            <Router>
+                <Box
+                    w="100%"
+                    minH="100vh"
+                    maxW="100%"
+                    h="100%"
+                    display="flex"
+                    alignItems="center"
+                    flexDir="column"
+                >
+                    <Box
+                        position="absolute"
+                        top="0%"
+                        zIndex="0"
+                        w="100%"
+                        h="max"
+                        minH="100vh"
+                        justifyContent="center"
+                        backgroundImage="https://images.unsplash.com/photo-1574267432644-f410f8ec2474?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1331&q=80"
+                        backgroundSize="cover"
+                        backgroundRepeat="no-repeat"
+                        filter="auto"
+                        brightness="60%"
+                        display="inline"
+                        boxShadow="inset 0px 0px 300px 20px rgba(0,0,0,1)"
+                    ></Box>
+                    <Routes>
+                        <Route
+                            path="register"
+                            element={<LoginForm getUser={getUser} />}
+                        />
+                        <Route path="" element={<HomePage user={user} />} />
+                        <Route path="home" element={<MoviePage />} />
+                        <Route path="home/search" element={<SearchPage />} />
+                    </Routes>
                 </Box>
-                <ColorModeSwitcher position="absolute" right="0%" />
-            </Box>
+            </Router>
         </ChakraProvider>
     );
 };
