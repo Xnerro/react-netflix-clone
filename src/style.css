@@ -1,6 +1,7 @@
 *::-webkit-scrollbar {
     background: black;
     width: 8px;
+    height: 3px;
     border-radius: 1vh;
 }
 

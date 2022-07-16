@@ -62,6 +62,7 @@ export const App: React.FC = () => {
                     display="flex"
                     alignItems="center"
                     flexDir="column"
+                    bg="black"
                 >
                     <Box
                         position="absolute"
@@ -77,7 +78,7 @@ export const App: React.FC = () => {
                         filter="auto"
                         brightness="60%"
                         display="inline"
-                        boxShadow="inset 0px 0px 300px 20px rgba(0,0,0,1)"
+                        boxShadow="inset 0px 0px 300px 20px rgba(0,0,0,1), inset -20px 0 2000px 20px black"
                     ></Box>
                     <Routes>
                         <Route
