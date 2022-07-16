@@ -37,7 +37,7 @@ export const SearchPage: FC = () => {
     });
     const [result, setResult] = useState<Result>();
     const [total, setTotal] = useState<Total>();
-    const [show, setShow] = useState(String);
+    const [show, setShow] = useState('movie');
     const [flag, setFlag] = useBoolean();
     const navigate = useNavigate();
 
